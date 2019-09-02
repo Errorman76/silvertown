@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="userMapper">
+	
+	<insert id="insertUserOne" parameterType="map">
+		INSERT INTO YO_USER VALUES(#{us_id}, #{us_pw}, #{us_name}, #{us_age}, #{us_img, jdbcType=BLOB}, #{us_authority})
+	</insert>
+	
+	<insert id="insertPatientOne" parameterType="map">
+		INSERT INTO YO_PATIENT(US_PA_ID) VALUES(#{us_id})
+	</insert>
+	
+	<insert id="insertGuardianOne" parameterType="map">
+		INSERT INTO YO_GUARDIAN VALUES(#{us_phone}, #{us_id})
+	</insert>
+	
+	<update id="updatePatientOne" parameterType="map">
+		UPDATE 
+			YO_PATIENT 
+		SET 
+			PA_UNIQUE=#{pa_unique}, 
+			PA_DISEASE=#{pa_disease}, 
+			US_GU_PA_ID=#{gu_id}
+		WHERE 
+			US_PA_ID=#{us_id}
+	</update>
+	
+	<resultMap id="userResult" type="map">
+		<result column="US_IMG" property="US_IMG" jdbcType="BLOB" javaType="[B"/>
+	</resultMap>
+	<select id="selectUserOne" parameterType="map" resultMap="userResult">
+		SELECT
+			*
+		FROM
+			YO_USER
+		WHERE
+			US_ID=#{id} AND US_PW=#{pw}
+	</select>
+	
+	<resultMap id="patientResult" type="map">
+		<result column="US_IMG" property="US_IMG" jdbcType="BLOB" javaType="[B"/>
+	</resultMap>
+	<select id="selectPatientOne" parameterType="String" resultMap="patientResult">
+		SELECT
+			*
+		FROM
+			YO_USER U, YO_PATIENT P
+		WHERE
+			U.US_ID=P.US_PA_ID AND
+			U.US_ID=#{id}
+	</select>
+	
+	<select id="selectPatientList" resultType="map">
+		SELECT
+			U.US_ID, U.US_NAME
+		FROM
+			YO_USER U, YO_PATIENT P
+		WHERE
+			U.US_ID=P.US_PA_ID
+	</select>
+	
+	<resultMap id="adminResult" type="map">
+		<result column="US_IMG" property="US_IMG" jdbcType="BLOB" javaType="[B"/>
+	</resultMap>
+	<select id="selectAdminOne" parameterType="String" resultMap="adminResult">
+		SELECT
+			*
+		FROM
+			YO_USER U, YO_ADMIN A
+		WHERE
+			U.US_ID=A.US_AD_ID AND
+			U.US_ID=#{id}
+	</select>
+	
+	<resultMap id="guardianResult" type="map">
+		<result column="US_IMG" property="US_IMG" jdbcType="BLOB" javaType="[B"/>
+	</resultMap>
+	<select id="selectGuardianOne" parameterType="String" resultMap="guardianResult">
+		SELECT
+			*
+		FROM
+			YO_USER U, YO_GUARDIAN G
+		WHERE
+			U.US_ID=G.US_GU_ID AND
+			U.US_ID=#{id}
+	</select>
+</mapper>

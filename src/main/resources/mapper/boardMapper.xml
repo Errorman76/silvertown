@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="boardMapper">
+	<select id="selectRequestList" resultType="map">
+		SELECT
+			*
+		FROM
+			YO_REQ
+	</select>
+	
+	<select id="selectSupportList" resultType="map">
+		SELECT
+			*
+		FROM
+			YO_COST
+	</select>
+	
+	<select id="selectPrescriptionList" resultType="map">
+		SELECT
+			*
+		FROM
+			YO_PRESCRIPTION
+	</select>
+	
+	<select id="selectRequestOne" parameterType="int" resultType="map">
+		SELECT
+			*
+		FROM
+			YO_REQ
+		WHERE
+			RE_NUM=#{re_num}
+	</select>
+	
+	<select id="selectPrescriptionOne" parameterType="String" resultType="map">
+		SELECT
+			*
+		FROM
+			YO_PRESCRIPTION
+		WHERE
+			PR_DISNAME=#{pr_disname}
+	</select>
+	
+	<insert id="insertRequestOne" parameterType="map">
+		INSERT INTO YO_REQ VALUES(SEQ_REQ_RE_NUM.NEXTVAL, SYSDATE, #{RE_COMMENT}, #{US_RE_ID}, #{RE_TITLE}, #{RE_CATEGORY} )
+	</insert>
+	
+	<insert id="insertSupportOne" parameterType="map">
+		INSERT INTO 
+			YO_COST 
+				VALUES
+			(#{CO_SUPPORT}, #{US_CO_ID}, #{CO_COMMENT}, #{CO_TITLE} )
+	</insert>
+</mapper>
